@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async () => {
     try {
-      // Direct redirect to Google OAuth - no need for pre-flight request
+      // CORRECT PATH: Full URL with /api/v1 prefix
       window.location.href = `${API_URL}/api/v1/auth/google/login`;
     } catch (error) {
       console.error('Login failed:', error);
