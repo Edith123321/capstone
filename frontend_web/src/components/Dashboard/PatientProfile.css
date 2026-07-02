@@ -769,3 +769,17 @@
     padding: 16px;
   }
 }
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #94a3b8;
+}
+
+.empty-state svg {
+  opacity: 0.5;
+}
+
+.empty-state p {
+  margin-top: 16px;
+}
