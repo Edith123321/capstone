@@ -46,9 +46,6 @@
   margin: 0 0 20px 0;
 }
 
-/* ===========================
-   Header
-=========================== */
 
 .profile-header {
   display: flex;
@@ -116,9 +113,6 @@
   flex-wrap: wrap;
 }
 
-/* ===========================
-   Buttons
-=========================== */
 
 .btn-primary,
 .btn-secondary {
@@ -176,9 +170,6 @@
   transform: translateX(-4px);
 }
 
-/* ===========================
-   Tabs
-=========================== */
 
 .profile-tabs {
   display: flex;
@@ -213,9 +204,6 @@
   color: white;
 }
 
-/* ===========================
-   Cards
-=========================== */
 
 .info-card,
 .stat-card,
@@ -234,9 +222,7 @@
   box-shadow: 0 4px 16px rgba(0, 70, 79, 0.06);
 }
 
-/* ===========================
-   Information Grid
-=========================== */
+
 
 .info-grid {
   display: grid;
@@ -268,9 +254,7 @@
   grid-column: 1 / -1;
 }
 
-/* ===========================
-   Stats - Brand Colors
-=========================== */
+
 
 .stats-grid {
   display: grid;
@@ -324,9 +308,7 @@
   color: #2563EB;
 }
 
-/* ===========================
-   Recent Activity
-=========================== */
+
 
 .recent-activity {
   background: white;
@@ -382,9 +364,6 @@
   font-size: 0.85rem;
 }
 
-/* ===========================
-   Badges - Brand Colors
-=========================== */
 
 .triage-badge,
 .prediction-badge {
@@ -437,10 +416,6 @@
   color: #dc2626;
 }
 
-/* ===========================
-   Tables
-=========================== */
-
 .triage-table {
   overflow-x: auto;
   background: white;
@@ -477,9 +452,6 @@
   border-bottom: none;
 }
 
-/* ===========================
-   Recordings
-=========================== */
 
 .recordings-grid {
   display: grid;
@@ -551,10 +523,6 @@
   flex-wrap: wrap;
 }
 
-/* ===========================
-   Tab Header
-=========================== */
-
 .tab-header {
   display: flex;
   justify-content: space-between;
@@ -577,9 +545,7 @@
   gap: 12px;
 }
 
-/* ===========================
-   Section Headers
-=========================== */
+
 
 .section-header {
   display: flex;
@@ -597,10 +563,6 @@
   font-weight: 600;
 }
 
-/* ===========================
-   Empty State
-=========================== */
-
 .empty-state {
   text-align: center;
   padding: 40px;
@@ -615,9 +577,6 @@
   margin-top: 16px;
 }
 
-/* ===========================
-   Responsive
-=========================== */
 
 @media (max-width: 1024px) {
   .patient-profile-container {
