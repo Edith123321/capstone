@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: saka-backend
+    runtime: python
+    repo: https://github.com/yourusername/capstone
+    plan: free
+    region: oregon
+    buildCommand: |
+      cd backend
+      python -m pip install --upgrade pip
+      pip install setuptools wheel==0.43.0
+      pip install --no-cache-dir -r requirements.txt
+    startCommand: |
+      cd backend
+      gunicorn --bind 0.0.0.0:$PORT app:app
+    rootDir: backend
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
+      - key: ALLOWED_ORIGINS
+        value: https://saka-frontend.onrender.com
+      - key: PYTHONUNBUFFERED
+        value: "1"
