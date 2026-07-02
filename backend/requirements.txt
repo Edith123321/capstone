@@ -1,4 +1,8 @@
+# Build tools - MUST be first
+setuptools==69.5.1
+wheel==0.43.0
 
+# Core Framework
 Flask==2.3.3
 Flask-CORS==4.0.0
 Flask-Session==0.5.0
@@ -19,7 +23,7 @@ scipy==1.10.1
 matplotlib==3.7.2
 seaborn==0.12.2
 
-# Deep Learning (for H5 models)
+# Deep Learning (optional - for H5 models)
 tensorflow==2.13.0
 
 # Database
