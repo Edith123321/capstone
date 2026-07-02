@@ -264,4 +264,4 @@ class HeartSoundClassifier:
 if __name__ == "__main__":
     # Test the classifier
     classifier = HeartSoundClassifier('../models/mitral_classifier_v4')
-    print("\n✅ Classifier ready for testing!")
+    print("\n Classifier ready for testing!")
