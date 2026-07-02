@@ -1,105 +1,91 @@
-// frontend_web/src/context/AuthContext.jsx
-import React, { createContext, useState, useContext, useEffect, useRef } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+// Use environment variable with fallback
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
 const AuthContext = createContext();
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(null);
-  
-  // Use a ref to track if verification has been done
-  const verificationDone = useRef(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Only run once
-    if (verificationDone.current) {
-      return;
-    }
-    
-    const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
+    const storedToken = localStorage.getItem('token');
     
-    console.log('🔍 AuthProvider: Checking localStorage...');
-    console.log('🔍 AuthProvider: Token present:', !!storedToken);
-    console.log('🔍 AuthProvider: User present:', !!storedUser);
-    
-    if (storedToken && storedUser) {
-      setToken(storedToken);
+    if (storedUser && storedToken) {
       try {
-        const userData = JSON.parse(storedUser);
-        setUser(userData);
-        console.log('✅ AuthProvider: User loaded from localStorage:', userData.email);
-        verificationDone.current = true;
-        setLoading(false);
+        setUser(JSON.parse(storedUser));
+        axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
       } catch (error) {
-        console.error('Failed to parse stored user:', error);
-        localStorage.removeItem('token');
+        console.error('Error parsing stored user:', error);
         localStorage.removeItem('user');
-        setLoading(false);
+        localStorage.removeItem('token');
       }
-    } else {
-      console.log('🔍 AuthProvider: No stored auth data');
-      setLoading(false);
     }
-  }, []); // Empty dependency - only run once
+    setLoading(false);
+  }, []);
 
   const login = async () => {
     try {
-      const response = await axios.get(`${API_URL}/auth/google/login`);
-      window.location.href = response.data.auth_url;
+      // Direct redirect to Google OAuth - no need for pre-flight request
+      window.location.href = `${API_URL}/api/v1/auth/google/login`;
     } catch (error) {
       console.error('Login failed:', error);
+      throw error;
     }
   };
 
-  const logout = () => {
-    console.log('🔍 Logging out...');
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setToken(null);
-    setUser(null);
-    verificationDone.current = false;
-    window.location.href = '/';
+  const logout = async () => {
+    try {
+      await axios.post(`${API_URL}/api/v1/auth/logout`);
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      delete axios.defaults.headers.common['Authorization'];
+      setUser(null);
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
-  const handleAuthCallback = (token, userData) => {
-    console.log('🔄 handleAuthCallback called');
-    console.log('📝 Token present:', !!token);
-    console.log('👤 User data:', userData);
-    
-    if (token && userData) {
-      // Save to localStorage
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(userData));
+  const handleCallback = async (code) => {
+    try {
+      const response = await axios.get(`${API_URL}/api/v1/auth/google/callback`, {
+        params: { code }
+      });
       
-      // Update state
-      setToken(token);
-      setUser(userData);
-      verificationDone.current = true;
-      
-      console.log('✅ Auth state updated successfully');
-      
-      // Use window.location for a hard redirect
-      window.location.href = '/dashboard';
-    } else {
-      console.error('❌ Invalid auth data received');
-      window.location.href = '/login?error=Invalid auth data';
+      if (response.data.success) {
+        const { user, token } = response.data;
+        setUser(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        navigate('/dashboard');
+        return { success: true };
+      }
+      return { success: false, error: 'Authentication failed' };
+    } catch (error) {
+      console.error('Auth callback error:', error);
+      return { success: false, error: error.message };
     }
+  };
+
+  const value = {
+    user,
+    setUser,
+    loading,
+    login,
+    logout,
+    handleCallback,
+    isAuthenticated: !!user,
   };
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      loading,
-      token,
-      login,
-      logout,
-      handleAuthCallback,
-      isAuthenticated: !!user
-    }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
@@ -112,3 +98,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+export default AuthContext;
