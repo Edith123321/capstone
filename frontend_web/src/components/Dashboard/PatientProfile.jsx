@@ -344,7 +344,6 @@ const PatientProfile = ({
   );
 };
 
-// Styles object
 const styles = {
   container: {
     padding: '24px',
