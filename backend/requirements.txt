@@ -1,10 +1,39 @@
-flask==2.3.2
-flask-cors==4.0.0
-librosa==0.10.0
+
+Flask==2.3.3
+Flask-CORS==4.0.0
+Flask-Session==0.5.0
+gunicorn==21.2.0
+python-dotenv==1.0.0
+
+# Audio Processing
+librosa==0.10.1
+soundfile==0.12.1
+audioread==3.0.1
+
+# ML & Data Processing
 numpy==1.24.3
 pandas==2.0.3
 scikit-learn==1.3.0
-joblib==1.3.1
+joblib==1.3.2
+scipy==1.10.1
 matplotlib==3.7.2
 seaborn==0.12.2
-soundfile==0.12.1
+
+# Deep Learning (for H5 models)
+tensorflow==2.13.0
+
+# Database
+psycopg2-binary==2.9.9
+Flask-SQLAlchemy==3.1.1
+Flask-Migrate==4.0.5
+
+# Authentication
+PyJWT==2.8.0
+requests==2.31.0
+authlib==1.3.1
+
+# Production Server
+waitress==2.1.2
+
+# Image processing
+Pillow==10.0.0
